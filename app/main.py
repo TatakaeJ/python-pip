@@ -1,6 +1,7 @@
-import app.charts as charts
-import app.read_csv as read_csv
-import app.utils as utils
+import charts as charts
+import pandas as pd
+import read_csv as read_csv
+import utils as utils
 
 
 def run():
@@ -24,8 +25,17 @@ def run():
         else:
             print("El país no existe")
     elif option == 2:
-        labels, values = utils.get_world_pupulation_percentage(data_world_population)
-        charts.generate_pie_chart(labels, values)
+        # dataframes (df) - todos los datos de donde obtienen los datos
+        df = pd.read_csv("data.csv")
+        # Filtrar por continente con pandas
+        continent = input("Ingresa el nombre del continente: ")
+        df = df[df["Continent"] == continent]
+        # Labels y values del grafico optenidos con pandas
+        countries = df["Country/Territory"].values
+        percentages = df["World Population Percentage"].values
+
+        # labels, values = utils.get_world_pupulation_percentage(data_world_population)
+        charts.generate_pie_chart(continent, countries, percentages)
 
 
 # hace que se ejecute como un script
